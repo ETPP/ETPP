@@ -1,1 +1,1 @@
-# ETPP
+# ETPP token
