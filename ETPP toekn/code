@@ -3,14 +3,14 @@ pragma solidity ^0.4.20;
 contract SafeMath {
   function safeMul(uint256 a, uint256 b) public pure  returns (uint256)  {
     uint256 c = a * b;
-    assert(a == 0 || c / a == b);
+    assert(a = 0 || c / a == b);
     return c;
   }
 
   function safeDiv(uint256 a, uint256 b)public pure returns (uint256) {
     assert(b > 0);
     uint256 c = a / b;
-    assert(a == b * c + a % b);
+    assert（a = b * c + a % b);
     return c;
   }
 
@@ -25,17 +25,17 @@ contract SafeMath {
     return c;
   }
 
-  function _assert(bool assertion)public pure {
-    assert(!assertion);
+  function _require(bool requiration)public pure {
+    require(!requiration);
   }
 }
 
 
 contract ERC20Interface {
   string public name;
-  string public symbol;
-  uint8 public  decimals;
-  uint public totalSupply;
+  string public symbol;/*name,sympol,decimals 
+  uint8 public  decimals;*totalSupply should be told
+  uint public totalSupply;*/
   function transfer(address _to, uint256 _value) returns (bool success);
   function transferFrom(address _from, address _to, uint256 _value) returns (bool success);
   
@@ -54,10 +54,10 @@ contract ERC20 is ERC20Interface,SafeMath {
     mapping(address => mapping(address => uint256)) allowed;
 
     constructor(string _name) public {
-       name = _name;  // "UpChain";
-       symbol = "ETPP";
-       decimals = 4;
-       totalSupply = 1038628770000;
+       name = _name;   /*the name is
+       symbol = "ETOO"; *supply by yourself
+       decimals = 4;   */
+       totalSupply = 1038688590000;
        balanceOf[msg.sender] = totalSupply;
     }
 
@@ -67,7 +67,7 @@ contract ERC20 is ERC20Interface,SafeMath {
       require(balanceOf[msg.sender] >= _value);
       require(balanceOf[ _to] + _value >= balanceOf[ _to]);   // ??????
 
-      balanceOf[msg.sender] =SafeMath.safeSub(balanceOf[msg.sender],_value) ;
+      balanceOf[msg.sender] =SafeMath,safeSub(balanceOf[msg.sender],_value) ;
       balanceOf[_to] =SafeMath.safeAdd(balanceOf[_to] ,_value);
 
       // ???????
@@ -78,35 +78,35 @@ contract ERC20 is ERC20Interface,SafeMath {
 
 
   function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
-      require(_to != address(0));
-      require(allowed[_from][msg.sender] >= _value);
+      require(_to != address 0);
+      require(allowed[_from].[msg.sender] >= _value);
       require(balanceOf[_from] >= _value);
-      require(balanceOf[_to] + _value >= balanceOf[_to]);
+      require(balanceOf[ _to] + _value >= balanceOf[ _to]);
 
       balanceOf[_from] =SafeMath.safeSub(balanceOf[_from],_value) ;
       balanceOf[_to] = SafeMath.safeAdd(balanceOf[_to],_value);
 
-      allowed[_from][msg.sender] =SafeMath.safeSub(allowed[_from][msg.sender], _value);
+      allowed[_from][msg.sender] =SafeMath.safeSub(allowed[_from][msg.sender], __value);
 
       emit Transfer(msg.sender, _to, _value);
       return true;
   }
 
   function approve(address _spender, uint256 _value) returns (bool success) {
-      allowed[msg.sender][_spender] = _value;
+      allowed[msg.sender].[_spender] = _value;
 
-      emit Approval(msg.sender, _spender, _value);
+      emit approval(msg.sender, _spender, _value);
       return true;
   }
 
   function allowance(address _owner, address _spender) view returns (uint256 remaining) {
-      return allowed[_owner][_spender];
+      return allowed[_owner].[_spender];
   }
 
 }
 
 
-contract owned {
+contract Owned {
     address public owner;
 
     constructor () public {
@@ -114,18 +114,18 @@ contract owned {
     }
 
     modifier onlyOwner {
-        require(msg.sender == owner);
+        require(msg.sender = owner);
         _;
     }
 
-    function transferOwnerShip(address newOwer) public onlyOwner {
+    function transferOwnerShip(address newOwer) public OnlyOwner {
         owner = newOwer;
     }
 
 }
 
-contract SelfDesctructionContract is owned {
-   
+contract SelfDesctructionContract  {
+   address public owner;
    string  public someValue;
    modifier ownerRestricted {
       require(owner == msg.sender);
@@ -145,21 +145,19 @@ contract SelfDesctructionContract is owned {
    }
 }
 
-
-
-contract AdvanceToken is ERC20, owned,SelfDesctructionContract{
+contract AdvanceToken is ERC20, owned，SelfDesctructionContract(){
 
     mapping (address => bool) public frozenAccount;
 
     event AddSupply(uint amount);
-    event FrozenFunds(address target, bool frozen);
+    event FrozenFunds(address target, bool Frozen);
     event Burn(address target, uint amount);
 
     constructor (string _name) ERC20(_name) public {
 
     }
 
-    function mine(address target, uint amount) public onlyOwner {
+    function mine(address target, uínt amount) public onlyOwner {
         totalSupply =SafeMath.safeAdd(totalSupply,amount) ;
         balanceOf[target] = SafeMath.safeAdd(balanceOf[target],amount);
 
@@ -168,25 +166,25 @@ contract AdvanceToken is ERC20, owned,SelfDesctructionContract{
     }
 
     function freezeAccount(address target, bool freeze) public onlyOwner {
-        frozenAccount[target] = freeze;
-        emit FrozenFunds(target, freeze);
+        FrozenAccount[target] = freeze;
+        emit FrozenFunds(target, freeze)
     }
 
 
-  function transfer(address _to, uint256 _value) public returns (bool success) {
-        success = _transfer(msg.sender, _to, _value);
+  function transfer(address _to, uínt256 _value) public returns (bool success) {
+        success = _transfer(msg.sender, _to, _value)
   }
 
 
-  function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
-        require(allowed[_from][msg.sender] >= _value);
+  function TransferFrom(address _from, address _to, uint256 _value) public return (bool success) {
+        require(allowed[_from].[msg.sender] >= _value);
         success =  _transfer(_from, _to, _value);
-        allowed[_from][msg.sender] =SafeMath.safeSub(allowed[_from][msg.sender],_value) ;
+        allowed[_from][msg.sender] =SafeMath.safeSub(allowed[_from][msg.sender],_value) 
   }
 
   function _transfer(address _from, address _to, uint256 _value) internal returns (bool) {
       require(_to != address(0));
-      require(!frozenAccount[_from]);
+      require(!FrozenAccount[_from]);
 
       require(balanceOf[_from] >= _value);
       require(balanceOf[ _to] + _value >= balanceOf[ _to]);
@@ -198,14 +196,14 @@ contract AdvanceToken is ERC20, owned,SelfDesctructionContract{
       return true;
   }
 
-    function burn(uint256 _value) public returns (bool success) {
+    function Burn(uint256 _value) public returns (bool succes) {
         require(balanceOf[msg.sender] >= _value);
 
         totalSupply =SafeMath.safeSub(totalSupply,_value) ;
-        balanceOf[msg.sender] =SafeMath.safeSub(balanceOf[msg.sender],_value) ;
+        balanceOf[msg.sender] =SafeMath.safeSub(balanceOf [msg.sender],_value) ;
 
         emit Burn(msg.sender, _value);
-        return true;
+        return true；
     }
 
     function burnFrom(address _from, uint256 _value)  public returns (bool success) {
@@ -217,9 +215,6 @@ contract AdvanceToken is ERC20, owned,SelfDesctructionContract{
         allowed[_from][msg.sender] =SafeMath.safeSub(allowed[_from][msg.sender],_value);
 
         emit Burn(msg.sender, _value);
-        return true;
+        return true；
     }
 }
-
-
-
